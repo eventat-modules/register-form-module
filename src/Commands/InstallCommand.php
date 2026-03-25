@@ -1,13 +1,13 @@
 <?php
 
-namespace Eventat\ModuleName\Commands;
+namespace Eventat\RegisterForm\Commands;
 
+use AhmedAliraqi\CrudGenerator\Console\Commands\Modifier;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\App;
-use Eventat\ModuleGenerator\Generator;
-use Illuminate\Support\Facades\Process;
+use LaravelModules\ModuleGenerator\Generator;
 
-use function Laravel\Prompts\multiselect;
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\text;
 
 class InstallCommand extends Command
 {
@@ -16,19 +16,14 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'module-name:install';
+    protected $signature = 'register-form:install {name? : Class (Singular), e.g User, Place, Car}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Install module name';
-
-    /**
-     * The list of the starter kit's features.
-     */
-    protected array $features = [];
+    protected $description = 'Install register form module';
 
     /**
      * Execute the console command.
@@ -37,87 +32,64 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->info('⌛ Installing module name ...');
+        $this->info('⌛ Installing register form module ...');
+
+        $name = $this->argument('name') ?? text(label: 'What is the CRUD name?', default: 'visitor');
+
+        $viewPath = str($name)->plural()->kebab()->toString();
 
         $this->newLine();
 
-        $this->askForRequestedFeatures();
+        $crud = app(Generator::class)->crud($name);
 
-        if (in_array('feature1', $this->features)) {
-            $this->installFeatureOne();
-        }
-
-        if (in_array('feature2', $this->features)) {
-            $this->installFeatureTwo();
-        }
-
-        $this->updateComposer();
-
-        $this->newLine();
-
-        $this->info('✅ All Done');
-    }
-
-    protected function installFeatureOne(): void
-    {
-        $this->line('⌛ Installing feature 1 ...');
-
-        $this->newLine();
-
-        $this->generator()
-            ->publish(__DIR__.'/../../stubs/feature-1')
-            ->registerServiceProvider('App\Providers\FeatureOneServiceProvider');
-
-        // Steps to install feature ...
-
-        $this->info('✅ Feature one has been installed.');
-    }
-
-    protected function installFeatureTwo(): void
-    {
-        $this->line('⌛ Installing feature 2 ...');
-
-        $this->newLine();
-
-        $this->generator()
-            ->publish(__DIR__.'/../../stubs/feature-2')
-            ->registerServiceProvider('App\Providers\FeatureTwoServiceProvider');
-
-        // Steps to install feature ...
-
-        $this->info('✅ Feature two has been installed.');
-    }
-
-    /**
-     * Ask about features you want to install.
-     */
-    protected function askForRequestedFeatures(): void
-    {
-        $this->features = multiselect(
-            label: 'Select the features that you want to install.',
-            options: [
-                'feature1' => 'Feature One',
-                'feature2' => 'Feature Two',
-            ],
-            default: ['feature1', 'feature2'],
+        $translateToArabic = confirm(
+            label: 'Do you want to translate CRUD to Arabic?',
+            default: false
         );
-    }
 
-    /**
-     * Update composer packages.
-     */
-    protected function updateComposer(): void
-    {
-        Process::run('composer update', function ($type, $output) {
-            $this->line($output);
-        });
-    }
+        if ($translateToArabic) {
+            $singular1 = text('Enter the Arabic singular name with “ال”, e.g. الزائر');
+            $singular2 = text('Enter the Arabic singular name without “ال”, e.g. زائر');
+            $plural1 = text('Enter the Arabic plural name with “ال”, e.g. الزوار');
+            $plural2 = text('Enter the Arabic plural name without “ال”, e.g. زوار', 'زوار');
+        }
 
-    /**
-     * Get the module generator instance.
-     */
-    protected function generator(): Generator
-    {
-        return App::make(Generator::class);
+        $crud->fromPath(__DIR__.'/../../stubs')
+            ->toPath(base_path())
+            ->appendToFile(
+                file: resource_path('views/layouts/sidebar.blade.php'),
+                content: "@include('dashboard.$viewPath.partials.actions.sidebar')",
+                before: "@include('dashboard.settings.sidebar')",
+            )
+            ->publish();
+
+        if ($translateToArabic) {
+            $crud->fromPath(__DIR__."/../../stubs/lang/ar")
+                ->toPath(base_path('lang/ar'))
+                ->appendReplacements([
+                    '__AR_SINGULAR1__' => $singular1,
+                    '__AR_SINGULAR2__' => $singular2,
+                    '__AR_PLURAL1__' => $plural1,
+                    '__AR_PLURAL2__' => $plural2,
+                ])
+                ->publish();
+        } else {
+            $crud->fromPath(__DIR__."/../../stubs/lang/en")
+                ->toPath(base_path('lang/ar'))
+                ->publish();
+        }
+
+        app(Modifier::class)->permission($name);
+
+        app(Modifier::class)->softDeletes($name);
+
+        app(Modifier::class)->langGenerator($name);
+
+        $this->info(
+            sprintf(
+                '✅ %s module has been installed successfully.',
+                str($name)->plural()->snake(' ')->title()->toString()
+            )
+        );
     }
 }

@@ -1,14 +1,18 @@
-## Module Name
+## Register Form Module
 
-This :module-name for the eventat's projects.
+This register form module for the eventat's projects.
 
 ### Installation
 ```shell
-composer require eventat-modules/module-name --dev
+composer require eventat-modules/register-form --dev
 ```
 
 ### Usage
 
 ```shell
-php artisan module-name:install
+php artisan register-form:install
+```
+
+```shell
+php artisan migrate
 ```

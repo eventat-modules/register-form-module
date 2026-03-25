@@ -1,11 +1,11 @@
 <?php
 
-namespace Eventat\ModuleName;
+namespace Eventat\RegisterForm;
 
+use Eventat\RegisterForm\Commands\InstallCommand;
 use Illuminate\Support\ServiceProvider;
-use Eventat\ModuleName\Commands\InstallCommand;
 
-class ModuleNameServiceProvider extends ServiceProvider
+class RegisterFormServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap any application services.
