@@ -4,7 +4,7 @@ namespace App\Http\Filters;
 
 use AhmedAliraqi\LaravelFilterable\BaseFilter;
 
-class DelegateFilter extends BaseFilter
+class __CRUD_STUDLY_SINGULAR__Filter extends BaseFilter
 {
     /**
      * The list of relations that are allowed to be included with the query.
