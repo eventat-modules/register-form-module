@@ -78,19 +78,13 @@ class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract
 
     public static function makeFromExcel(array $row): static|array|null
     {
-        $model = self::query()->where('email', $row['email'])->first();
-
-        $data = collect(self::fields())->mapWithKeys(function ($field) use ($model) {
-            return [$field['name'] => $model->{$field['name']}];
+        $data = collect(self::fields())->mapWithKeys(function ($field) use ($row) {
+            return [$field['name'] => data_get($row, $field['name'])];
         })->toArray();
 
-        if ($model) {
-            $model->forceFill($data);
-        } else {
-            $model = new self($data);
-        }
+        $model = new self;
 
-        return $model;
+        return $model->forceFill($data);
     }
 
     public static function validationRules(): array
@@ -98,5 +92,10 @@ class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract
         return collect(self::fields())->mapWithKeys(function ($field) {
             return [$field['name'] => $field['rules'] ?? []];
         })->toArray();
+    }
+
+    public static function uniqueBy(): string
+    {
+        return 'email';
     }
 }
