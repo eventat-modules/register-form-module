@@ -3,9 +3,11 @@
     @slot('title', __('__CRUD_KEBAB_PLURAL__.filter'))
 
         <div class="row">
+            @foreach(\App\Models\__CRUD_STUDLY_SINGULAR__::filterFields() as $field)
             <div class="col-md-6">
-                {{ BsForm::text('name')->value(request('name')) }}
+                {!! $field['type']->input($field, 'dashboard', request()) !!}
             </div>
+            @endforeach
             <div class="col-md-6">
                 {{ BsForm::number('perPage')
                 ->value(request('perPage', 15))

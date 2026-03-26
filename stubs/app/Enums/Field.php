@@ -4,6 +4,7 @@ namespace App\Enums;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Http\Request;
 
 enum Field: string
 {
@@ -25,7 +26,7 @@ enum Field: string
         };
     }
 
-    public function input(?array $field = null, string $variant = 'web', ?Model $model = null): ?string
+    public function input(?array $field = null, string $variant = 'web', Model|Request|null $model = null): ?string
     {
         if (! $field) {
             return null;

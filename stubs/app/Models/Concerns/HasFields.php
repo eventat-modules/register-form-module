@@ -17,7 +17,7 @@ trait HasFields
     public static function indexTableHeads(): array
     {
         return collect(self::fields())->filter(function ($field) {
-            return $field['show-in-index'];
+            return isset($field['show-in-index']) && $field['show-in-index'];
         })->map(function ($field) {
             return $field['label'];
         })->values()->toArray();
@@ -26,8 +26,22 @@ trait HasFields
     public static function indexFieldNames(): array
     {
         return collect(self::fields())->filter(function ($field) {
-            return $field['show-in-index'];
+            return isset($field['show-in-index']) && $field['show-in-index'];
         })->map(function ($field) {
+            return $field['name'];
+        })->values()->toArray();
+    }
+
+    public static function filterFields(): array
+    {
+        return collect(self::fields())->filter(function ($field) {
+            return isset($field['filterable']) && $field['filterable'];
+        })->values()->toArray();
+    }
+
+    public static function filterFieldNames(): array
+    {
+        return collect(self::filterFields())->map(function ($field) {
             return $field['name'];
         })->values()->toArray();
     }

@@ -11,7 +11,6 @@ return [
     'trashed' => 'Trashed __CRUD_LOWER_PLURAL__',
     'perPage' => 'Results per page',
     'filter' => 'Search for __CRUD_LOWER_SINGULAR__',
-    'registered' => 'Thank you for your registration.',
     'actions' => [
         'list' => 'List all',
         'create' => 'Create a new __CRUD_LOWER_SINGULAR__',
@@ -29,9 +28,10 @@ return [
         'updated' => 'The __CRUD_LOWER_SINGULAR__ has been updated successfully.',
         'deleted' => 'The __CRUD_LOWER_SINGULAR__ has been deleted successfully.',
         'restored' => 'The __CRUD_LOWER_SINGULAR__ has been restored successfully.',
+        'registered' => 'Thank you for your registration.',
     ],
     'attributes' => [
-        'name' => '__CRUD_UCFIRST_PLURAL__ name',
+        '__CRUD_SNAKE_PLURAL___welcome_email_template' => 'Welcome Email Template',
     ],
     'dialogs' => [
         'delete' => [

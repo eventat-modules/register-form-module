@@ -31,7 +31,8 @@ return [
         'registered' => 'شكرًا لتسجيلك.',
     ],
     'attributes' => [
-        'name' => 'اسم __AR_SINGULAR1__',
+        '__CRUD_SNAKE_PLURAL___welcome_email_template' => 'قالب بريد الترحيب',
+
     ],
     'dialogs' => [
         'delete' => [

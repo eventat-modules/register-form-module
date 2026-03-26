@@ -1,6 +1,6 @@
 <x-layout :title="__('__CRUD_KEBAB_PLURAL__.plural')" :breadcrumbs="['dashboard.__CRUD_KEBAB_PLURAL__.index']">
     @include('dashboard.errors')
-    @include('dashboard.delegates.partials.settings')
+    @include('dashboard.__CRUD_KEBAB_PLURAL__.partials.settings')
     @include('dashboard.__CRUD_KEBAB_PLURAL__.partials.filter')
 
     @component('dashboard::components.table-box')

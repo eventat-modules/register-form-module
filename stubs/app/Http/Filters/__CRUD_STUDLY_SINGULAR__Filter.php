@@ -3,37 +3,31 @@
 namespace App\Http\Filters;
 
 use AhmedAliraqi\LaravelFilterable\BaseFilter;
+use App\Models\__CRUD_STUDLY_SINGULAR__;
+use Illuminate\Database\Eloquent\Builder;
 
 class __CRUD_STUDLY_SINGULAR__Filter extends BaseFilter
 {
     /**
-     * The list of relations that are allowed to be included with the query.
-     */
-    protected array $supportedInclude = [];
-
-    /**
      * Registered filters to operate upon.
      */
-    protected array $filters = [
-        'name',
-        'selected_id',
-    ];
+    protected array $filters = [];
 
-    /**
-     * Apply a filter to the query based on the "name" field.
-     */
-    protected function name(mixed $value): void
+    public function __construct(array $data = [], array $include = [])
     {
-        $this->builder->where('name', 'like', "%$value%");
+        parent::__construct($data, $include);
+
+        $this->filters = __CRUD_STUDLY_SINGULAR__::filterFieldNames();
     }
 
-    /**
-     * Sorting results by the given id.
-     */
-    public function selectedId(mixed $ids): void
+    public function apply(Builder $builder): Builder
     {
-        if ($ids) {
-            $this->builder->sortingByIds($ids);
+        foreach ($this->filters as $filter) {
+            $value = data_get($this->data, $filter);
+
+            $builder->where($filter, 'like', "%$value%");
         }
+
+        return $builder;
     }
 }
