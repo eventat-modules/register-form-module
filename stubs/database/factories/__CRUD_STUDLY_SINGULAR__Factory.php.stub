@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Astrotomic\Translatable\Validation\RuleFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,11 +16,8 @@ class __CRUD_STUDLY_SINGULAR__Factory extends Factory
      */
     public function definition(): array
     {
-        return RuleFactory::make([
-            '%name%' => $this->faker->word,
-            '%description%' => $this->faker->sentence,
-            'price' => rand(0, 100),
-            'active' => $this->faker->boolean,
-        ]);
+        return [
+            'name' => $this->faker->word,
+        ];
     }
 }

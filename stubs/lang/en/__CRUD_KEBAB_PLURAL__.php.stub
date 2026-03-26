@@ -11,6 +11,7 @@ return [
     'trashed' => 'Trashed __CRUD_LOWER_PLURAL__',
     'perPage' => 'Results per page',
     'filter' => 'Search for __CRUD_LOWER_SINGULAR__',
+    'registered' => 'Thank you for your registration.',
     'actions' => [
         'list' => 'List all',
         'create' => 'Create a new __CRUD_LOWER_SINGULAR__',
@@ -31,11 +32,6 @@ return [
     ],
     'attributes' => [
         'name' => '__CRUD_UCFIRST_PLURAL__ name',
-        '%name%' => '__CRUD_UCFIRST_PLURAL__ name',
-        'description' => '__CRUD_UCFIRST_PLURAL__ description',
-        '%description%' => '__CRUD_UCFIRST_PLURAL__ description',
-        'price' => 'Price',
-        'active' => 'Active',
     ],
     'dialogs' => [
         'delete' => [

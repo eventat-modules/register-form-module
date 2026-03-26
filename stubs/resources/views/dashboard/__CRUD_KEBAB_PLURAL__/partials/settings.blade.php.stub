@@ -1,0 +1,27 @@
+@php
+    $templates = \App\Models\MailTemplate::where('model_type', \App\Models\__CRUD_STUDLY_SINGULAR__::class)->latest()->get()
+        ->pluck('name', 'id')
+        ->prepend('', '')
+        ->toArray();
+@endphp
+
+@if(! empty($templates))
+    {{ BsForm::resource('__CRUD_KEBAB_PLURAL__')->patch(route('dashboard.settings.update')) }}
+    @component('dashboard::components.box')
+        @slot('title', __('settings.plural'))
+
+        <div class="row">
+            <div class="col-md-12">
+                {{ BsForm::select('__CRUD_SNAKE_PLURAL___welcome_email_template')
+                    ->options($templates)
+                    ->placeholder('')
+                    ->value(Settings::get('__CRUD_SNAKE_PLURAL___welcome_email_template')) }}
+            </div>
+        </div>
+
+        @slot('footer')
+            {{ BsForm::submit()->label(trans('settings.actions.save')) }}
+        @endslot
+    @endcomponent
+    {{ BsForm::close() }}
+@endif

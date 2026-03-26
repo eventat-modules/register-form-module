@@ -3,7 +3,9 @@
     @component('dashboard::components.box')
         @slot('title', __('__CRUD_KEBAB_PLURAL__.actions.edit'))
 
-        @include('dashboard.__CRUD_KEBAB_PLURAL__.partials.form')
+        @foreach(\App\Models\__CRUD_STUDLY_SINGULAR__::fields() as $field)
+            {!! $field['type']->input($field, 'dashboard', $__CRUD_CAMEL_SINGULAR__) !!}
+        @endforeach
 
         @slot('footer')
             {{ BsForm::submit()->label(__('__CRUD_KEBAB_PLURAL__.actions.save')) }}

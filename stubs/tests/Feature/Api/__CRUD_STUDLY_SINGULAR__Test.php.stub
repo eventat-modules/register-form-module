@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api;
 
 use App\Models\__CRUD_STUDLY_SINGULAR__;
-use Astrotomic\Translatable\Validation\RuleFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -66,7 +65,7 @@ class __CRUD_STUDLY_SINGULAR__Test extends TestCase
     {
         $this->actingAsAdmin();
 
-        $__CRUD_STUDLY_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::factory(RuleFactory::make(['%name%' => 'Foo']))->create();
+        $__CRUD_STUDLY_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::factory(['name' => 'Foo'])->create();
 
         $response = $this->getJson(route('api.__CRUD_KEBAB_PLURAL__.show', $__CRUD_STUDLY_SINGULAR__))
             ->assertSuccessful()

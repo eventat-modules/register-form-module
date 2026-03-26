@@ -28,14 +28,10 @@ return [
         'updated' => 'تم تعديل __AR_SINGULAR1__ بنجاح.',
         'deleted' => 'تم حذف __AR_SINGULAR1__ بنجاح.',
         'restored' => 'تم استعادة __AR_SINGULAR1__ بنجاح.',
+        'registered' => 'شكرًا لتسجيلك.',
     ],
     'attributes' => [
         'name' => 'اسم __AR_SINGULAR1__',
-        '%name%' => 'اسم __AR_SINGULAR1__',
-        'description' => 'وصف __AR_SINGULAR1__',
-        '%description%' => 'وصف __AR_SINGULAR1__',
-        'price' => 'السعر',
-        'active' => 'مفعل',
     ],
     'dialogs' => [
         'delete' => [

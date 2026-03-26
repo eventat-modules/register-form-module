@@ -42,7 +42,7 @@ class __CRUD_STUDLY_SINGULAR__Controller extends Controller
      */
     public function store(__CRUD_STUDLY_SINGULAR__Request $request): RedirectResponse
     {
-        $__CRUD_CAMEL_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::create($request->all());
+        $__CRUD_CAMEL_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::query()->forceCreate($request->validated());
 
         flash()->success(__('__CRUD_KEBAB_PLURAL__.messages.created'));
 
@@ -68,11 +68,9 @@ class __CRUD_STUDLY_SINGULAR__Controller extends Controller
     /**
      * Update the specified __CRUD_LOWER_SINGULAR__ in storage.
      */
-    public function update(
-        __CRUD_STUDLY_SINGULAR__Request $request,
-        __CRUD_STUDLY_SINGULAR__ $__CRUD_CAMEL_SINGULAR__
-    ): RedirectResponse {
-        $__CRUD_CAMEL_SINGULAR__->update($request->all());
+    public function update(__CRUD_STUDLY_SINGULAR__Request $request, __CRUD_STUDLY_SINGULAR__ $__CRUD_CAMEL_SINGULAR__): RedirectResponse
+    {
+        $__CRUD_CAMEL_SINGULAR__->forceFill($request->validated())->save();
 
         flash()->success(__('__CRUD_KEBAB_PLURAL__.messages.updated'));
 

@@ -1,0 +1,5 @@
+<?php
+
+use App\Http\Controllers\Register__CRUD_STUDLY_SINGULAR__Controller;
+
+Route::post('register/__CRUD_KEBAB_SINGULAR__', Register__CRUD_STUDLY_SINGULAR__Controller::class)->name('register.__CRUD_KEBAB_SINGULAR__');

@@ -4,7 +4,7 @@ namespace App\Http\Filters;
 
 use AhmedAliraqi\LaravelFilterable\BaseFilter;
 
-class __CRUD_STUDLY_SINGULAR__Filter extends BaseFilter
+class DelegateFilter extends BaseFilter
 {
     /**
      * The list of relations that are allowed to be included with the query.
@@ -24,7 +24,7 @@ class __CRUD_STUDLY_SINGULAR__Filter extends BaseFilter
      */
     protected function name(mixed $value): void
     {
-        $this->builder->whereTranslationLike('name', "%$value%");
+        $this->builder->where('name', 'like', "%$value%");
     }
 
     /**

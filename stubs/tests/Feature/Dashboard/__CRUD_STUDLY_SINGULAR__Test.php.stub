@@ -3,7 +3,6 @@
 namespace Tests\Feature\Dashboard;
 
 use App\Models\__CRUD_STUDLY_SINGULAR__;
-use Astrotomic\Translatable\Validation\RuleFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -49,14 +48,7 @@ class __CRUD_STUDLY_SINGULAR__Test extends TestCase
 
         $response = $this->post(
             route('dashboard.__CRUD_KEBAB_PLURAL__.store'),
-            __CRUD_STUDLY_SINGULAR__::factory()->raw(
-                RuleFactory::make([
-                    '%name%' => 'Foo',
-                    '%description%' => 'test description',
-                    'price' => 0,
-                    'active' => true,
-                ])
-            )
+            __CRUD_STUDLY_SINGULAR__::factory()->raw(['name' => 'Foo'])
         );
 
         $response->assertRedirect();
@@ -86,14 +78,7 @@ class __CRUD_STUDLY_SINGULAR__Test extends TestCase
 
         $response = $this->put(
             route('dashboard.__CRUD_KEBAB_PLURAL__.update', $__CRUD_CAMEL_SINGULAR__),
-            __CRUD_STUDLY_SINGULAR__::factory()->raw(
-                RuleFactory::make([
-                    '%name%' => 'Foo',
-                    '%description%' => 'test description',
-                    'price' => 0,
-                    'active' => true,
-                ])
-            )
+            __CRUD_STUDLY_SINGULAR__::factory()->raw(['name' => 'Foo'])
         );
 
         $__CRUD_CAMEL_SINGULAR__->refresh();

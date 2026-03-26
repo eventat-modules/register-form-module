@@ -7,26 +7,12 @@
 
                 <table class="table table-striped table-middle">
                     <tbody>
+                    @foreach(\App\Models\__CRUD_STUDLY_SINGULAR__::fields() as $field)
                     <tr>
-                        <th width="200">@lang('__CRUD_KEBAB_PLURAL__.attributes.name')</th>
-                        <td>{{ $__CRUD_CAMEL_SINGULAR__->name }}</td>
+                        <th width="200">{{ $field['label'] }}</th>
+                        <td>{{ $__CRUD_CAMEL_SINGULAR__->getFieldValue($field['name']) }}</td>
                     </tr>
-                    @if($__CRUD_CAMEL_SINGULAR__->description)
-                        <tr>
-                            <th width="200">@lang('__CRUD_KEBAB_PLURAL__.attributes.description')</th>
-                            <td>{!! $__CRUD_CAMEL_SINGULAR__->description !!}</td>
-                        </tr>
-                    @endif
-                    <tr>
-                        <th width="200">@lang('__CRUD_KEBAB_PLURAL__.attributes.price')</th>
-                        <td>{{ $__CRUD_CAMEL_SINGULAR__->price }} SAR</td>
-                    </tr>
-                    <tr>
-                        <th width="200">@lang('__CRUD_KEBAB_PLURAL__.attributes.active')</th>
-                        <td>
-                            <x-boolean is="{{ $__CRUD_CAMEL_SINGULAR__->active }}"></x-boolean>
-                        </td>
-                    </tr>
+                    @endforeach
                     </tbody>
                 </table>
 

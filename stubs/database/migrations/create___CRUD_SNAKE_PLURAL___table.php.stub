@@ -14,20 +14,10 @@ return new class extends Migration
     {
         Schema::create('__CRUD_SNAKE_PLURAL__', function (Blueprint $table) {
             $table->id();
-            $table->decimal('price')->nullable();
-            $table->boolean('active')->default(true);
+            foreach (\App\Models\__CRUD_STUDLY_SINGULAR__::fields() as $field) {
+                $field['type']->migration($table, $field['name']);
+            }
             $table->timestamps();
-            $table->softDeletes();
-        });
-
-        Schema::create('__CRUD_SNAKE_SINGULAR___translations', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('__CRUD_SNAKE_SINGULAR___id');
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->string('locale')->index();
-            $table->unique(['__CRUD_SNAKE_SINGULAR___id', 'locale']);
-            $table->foreign('__CRUD_SNAKE_SINGULAR___id')->references('id')->on('__CRUD_SNAKE_PLURAL__')->cascadeOnDelete();
         });
 
         Artisan::call('db:seed', [
@@ -43,7 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('__CRUD_SNAKE_SINGULAR___translations');
         Schema::dropIfExists('__CRUD_SNAKE_PLURAL__');
     }
 };
