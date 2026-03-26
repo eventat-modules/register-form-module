@@ -22,7 +22,7 @@ class __CRUD_STUDLY_SINGULAR__Seeder extends Seeder
             'subject:ar' => 'مرحبًا بك في منصتنا 🎉',
             'subject:en' => 'Welcome to Our Platform 🎉',
             'content:ar' => '
-                <p>مرحبًا %CRUD_SNAKE_UPPER_SINGULAR_NAME%،</p>
+                <p>مرحبًا %__CRUD_SNAKE_UPPER_SINGULAR___NAME%،</p>
 
                 <p>نرحب بك في منصتنا! نحن سعداء بانضمامك إلينا.</p>
 
