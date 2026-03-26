@@ -39,7 +39,7 @@ class __CRUD_STUDLY_SINGULAR__Seeder extends Seeder
                 فريق الدعم</p>
             ',
             'content:en' => '
-                <p>Hi %DELEGATE_NAME%,</p>
+                <p>Hi %__CRUD_SNAKE_UPPER_SINGULAR___NAME%,</p>
 
                 <p>Welcome to our platform! We’re excited to have you on board.</p>
 
