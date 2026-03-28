@@ -2,6 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use App\Enums\Field;
+
 trait HasFields
 {
     abstract public static function fields(): array;
@@ -30,6 +32,37 @@ trait HasFields
         })->map(function ($field) {
             return $field['name'];
         })->values()->toArray();
+    }
+
+    public static function getFileFields(): array
+    {
+        return collect(self::fields())->filter(function ($field) {
+            return isset($field['type']) && $field['type'] == Field::FILE;
+        })->values()->toArray();
+    }
+
+    public static function getFileFieldNames(): array
+    {
+        return collect(self::fields())->filter(function ($field) {
+            return isset($field['type']) && $field['type'] == Field::FILE;
+        })->values()->map(function ($field) {
+            return $field['name'];
+        })->toArray();
+    }
+
+    public static function getFillableFields(): array
+    {
+        return collect(self::fields())->filter(function ($field) {
+            return isset($field['type']) && $field['type'] !== Field::FILE;
+        })->values()->toArray();
+    }
+    public static function getFillableFieldNames(): array
+    {
+        return collect(self::fields())->filter(function ($field) {
+            return isset($field['type']) && $field['type'] !== Field::FILE;
+        })->values()->map(function ($field) {
+            return $field['name'];
+        })->toArray();
     }
 
     public static function filterFields(): array
@@ -71,6 +104,10 @@ trait HasFields
 
     public function getFieldValue(string $name): mixed
     {
-        return $this->{$name};
+        if ($field = self::getFieldByName($name)) {
+            return $field['type']->getValue($this->{$field['name']});
+        }
+
+        return $this->{$field['name']};
     }
 }

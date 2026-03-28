@@ -14,14 +14,18 @@ use App\Support\Traits\Selectable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract, Exportable, Importable
+class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract, Exportable, Importable, HasMedia
 {
     use Filterable;
     use HasFactory;
     use Selectable;
     use HasEmailTemplate;
     use HasFields;
+    use InteractsWithMedia;
 
     /**
      * The filter class used for querying this model.
@@ -78,7 +82,7 @@ class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract
 
     public static function makeFromExcel(array $row): static|array|null
     {
-        $data = collect(self::fields())->mapWithKeys(function ($field) use ($row) {
+        $data = collect(self::getFillableFields())->mapWithKeys(function ($field) use ($row) {
             return [$field['name'] => data_get($row, $field['name'])];
         })->toArray();
 
@@ -89,7 +93,7 @@ class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract
 
     public static function validationRules(): array
     {
-        return collect(self::fields())->mapWithKeys(function ($field) {
+        return collect(self::getFillableFields())->mapWithKeys(function ($field) {
             return [$field['name'] => $field['rules'] ?? []];
         })->toArray();
     }
@@ -97,5 +101,44 @@ class __CRUD_STUDLY_SINGULAR__ extends Model implements HasEmailTemplateContract
     public static function uniqueBy(): string
     {
         return 'email';
+    }
+
+    /**
+     * Define the media collections.
+     */
+    public function registerMediaCollections(): void
+    {
+        foreach (self::getFileFields() as $field) {
+            $collection = $this->addMediaCollection($field['name']);
+
+            if (isset($field['single-file']) && $field['single-file']) {
+                $collection->singleFile();
+            }
+
+            $collection->registerMediaConversions(function () {
+                $this
+                    ->addMediaConversion('large')
+                    ->format('webp')
+                    ->quality(60);
+
+                $this
+                    ->addMediaConversion('medium')
+                    ->fit(Fit::Max, 800, 800)
+                    ->format('webp')
+                    ->quality(60);
+
+                $this
+                    ->addMediaConversion('small')
+                    ->fit(Fit::Max, 400, 400)
+                    ->format('webp')
+                    ->quality(60);
+
+                $this
+                    ->addMediaConversion('thumb')
+                    ->fit(Fit::Max, 150, 150)
+                    ->format('webp')
+                    ->quality(60);
+            });
+        }
     }
 }

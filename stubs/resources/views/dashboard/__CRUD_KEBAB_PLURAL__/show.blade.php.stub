@@ -10,7 +10,13 @@
                     @foreach(\App\Models\__CRUD_STUDLY_SINGULAR__::fields() as $field)
                     <tr>
                         <th width="200">{{ $field['label'] }}</th>
-                        <td>{{ $__CRUD_CAMEL_SINGULAR__->getFieldValue($field['name']) }}</td>
+                        <td>
+                            @if($field['type'] == \App\Enums\Field::FILE)
+                            <img src="{{ $__CRUD_CAMEL_SINGULAR__->getFirstMediaUrl($field['name'], 'medium') }}" class="mw-100" alt="">
+                            @else
+                            {{ $__CRUD_CAMEL_SINGULAR__->getFieldValue($field['name']) }}
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>

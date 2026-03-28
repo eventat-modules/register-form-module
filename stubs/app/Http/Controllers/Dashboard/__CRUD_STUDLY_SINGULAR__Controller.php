@@ -9,6 +9,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 
 class __CRUD_STUDLY_SINGULAR__Controller extends Controller
 {
@@ -42,7 +43,14 @@ class __CRUD_STUDLY_SINGULAR__Controller extends Controller
      */
     public function store(__CRUD_STUDLY_SINGULAR__Request $request): RedirectResponse
     {
-        $__CRUD_CAMEL_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::query()->forceCreate($request->validated());
+        $data = Arr::except($request->validated(), __CRUD_STUDLY_SINGULAR__::getFileFieldNames());
+        $files = Arr::only($request->validated(), __CRUD_STUDLY_SINGULAR__::getFileFieldNames());
+
+        $__CRUD_CAMEL_SINGULAR__ = __CRUD_STUDLY_SINGULAR__::query()->forceCreate($data);
+
+        foreach ($files as $key => $file) {
+            $__CRUD_CAMEL_SINGULAR__->addMediaFromRequest($key)->toMediaCollection($key);
+        }
 
         flash()->success(__('__CRUD_KEBAB_PLURAL__.messages.created'));
 
@@ -70,7 +78,14 @@ class __CRUD_STUDLY_SINGULAR__Controller extends Controller
      */
     public function update(__CRUD_STUDLY_SINGULAR__Request $request, __CRUD_STUDLY_SINGULAR__ $__CRUD_CAMEL_SINGULAR__): RedirectResponse
     {
-        $__CRUD_CAMEL_SINGULAR__->forceFill($request->validated())->save();
+        $data = Arr::except($request->validated(), __CRUD_STUDLY_SINGULAR__::getFileFieldNames());
+        $files = Arr::only($request->validated(), __CRUD_STUDLY_SINGULAR__::getFileFieldNames());
+
+        $__CRUD_CAMEL_SINGULAR__->forceFill($data)->save();
+
+        foreach ($files as $key => $file) {
+            $__CRUD_CAMEL_SINGULAR__->addMediaFromRequest($key)->toMediaCollection($key);
+        }
 
         flash()->success(__('__CRUD_KEBAB_PLURAL__.messages.updated'));
 

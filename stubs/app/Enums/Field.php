@@ -16,6 +16,7 @@ enum Field: string
     case RADIO = 'radio';
     case SELECT = 'select';
     case YES_NO = 'yes-no';
+    case FILE = 'file';
 
     public function migration(Blueprint $table, string $name)
     {
@@ -23,6 +24,7 @@ enum Field: string
             self::STRING, self::EMAIL, self::PHONE, self::RADIO, self::YES_NO, self::SELECT => $table->string($name)->nullable(),
             self::TEXT => $table->text($name)->nullable(),
             self::CHECKBOX => $table->boolean($name)->nullable(),
+            default => $table,
         };
     }
 
@@ -35,10 +37,10 @@ enum Field: string
         return view("components.form.$variant.".$this->value, compact('field', 'model'))->render();
     }
 
-    public function getValue(string $name, mixed $value): string
+    public function getValue(mixed $value): mixed
     {
         return match ($this) {
-            self::YES_NO => filter_var($value, FILTER_VALIDATE_BOOLEAN) ? 'Yes' : 'No',
+            self::CHECKBOX => filter_var($value, FILTER_VALIDATE_BOOLEAN) ? 'Yes' : 'No',
             default => $value,
         };
     }
