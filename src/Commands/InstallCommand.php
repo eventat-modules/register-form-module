@@ -83,8 +83,6 @@ class InstallCommand extends Command
 
         app(Modifier::class)->softDeletes($name);
 
-        app(Modifier::class)->langGenerator($name);
-
         $this->info(
             sprintf(
                 '✅ %s module has been installed successfully.',
